@@ -10,6 +10,7 @@ import UIKit
 class SearchResultViewController: UIViewController {
     
     // 컬렉션뷰
+    @IBOutlet weak var collectionView: UICollectionView!
     
     // 컬렉션뷰의 레이아웃을 담당하는 객체! ⭐️⭐️⭐️
     let flowLayout = UICollectionViewFlowLayout()
@@ -37,7 +38,7 @@ class SearchResultViewController: UIViewController {
     
     func setupCollectionView() {
         collectionView.dataSource = self
-        collectionView.delegate = self
+        collectionView.backgroundColor = .white
         
         // 컬렉션뷰의 스크롤 방향설정
         flowLayout.scrollDirection = .vertical
@@ -74,6 +75,9 @@ extension SearchResultViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        <#code#>
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Cell.musicCollectionViewCellIdentifier, for: indexPath) as! MusicCollectionViewCell
+        
+        
+        return cell
     }
 }
