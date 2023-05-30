@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1D6A636C2A239218000D230E /* MusicPlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D6A636B2A239218000D230E /* MusicPlayViewController.swift */; };
 		1DDE453D2A1F89BB00B74D6B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DDE453C2A1F89BB00B74D6B /* AppDelegate.swift */; };
 		1DDE453F2A1F89BB00B74D6B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DDE453E2A1F89BB00B74D6B /* SceneDelegate.swift */; };
 		1DDE45412A1F89BB00B74D6B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DDE45402A1F89BB00B74D6B /* ViewController.swift */; };
@@ -24,6 +25,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1D6A636B2A239218000D230E /* MusicPlayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicPlayViewController.swift; sourceTree = "<group>"; };
 		1DDE45392A1F89BB00B74D6B /* MusicApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MusicApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DDE453C2A1F89BB00B74D6B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1DDE453E2A1F89BB00B74D6B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -127,6 +129,7 @@
 			children = (
 				1DDE45402A1F89BB00B74D6B /* ViewController.swift */,
 				1DDE455F2A1F962600B74D6B /* SearchResultViewController.swift */,
+				1D6A636B2A239218000D230E /* MusicPlayViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -206,6 +209,7 @@
 				1DDE455C2A1F93AA00B74D6B /* NetworkManager.swift in Sources */,
 				1DDE455A2A1F904200B74D6B /* Constants.swift in Sources */,
 				1DDE45632A1FABD200B74D6B /* MusicCell.swift in Sources */,
+				1D6A636C2A239218000D230E /* MusicPlayViewController.swift in Sources */,
 				1DDE45412A1F89BB00B74D6B /* ViewController.swift in Sources */,
 				1DDE453D2A1F89BB00B74D6B /* AppDelegate.swift in Sources */,
 				1DDE455E2A1F946600B74D6B /* Music.swift in Sources */,

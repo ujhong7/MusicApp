@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SearchResultViewController: UIViewController {
+final class SearchResultViewController: UIViewController {
     
     // 컬렉션뷰
     @IBOutlet weak var collectionView: UICollectionView!
@@ -19,13 +19,13 @@ class SearchResultViewController: UIViewController {
     let networkManager = NetworkManger.shared
     
     // 음악 데이터를 다루기 위해 빈 배열로 시작!
-    var musicArrays: [Music?] = []
+    var musicArrays: [Music] = []
     
     // 서치바에서 검색을 위한 단어를 담는 변수 (전화면에서 전달받음)
     var searchTerm: String? {
         // 글자가 바뀔때마다 호출
         didSet{
-            
+            setupDatas()
         }
     }
     
@@ -33,7 +33,7 @@ class SearchResultViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = .white
-        
+        setupCollectionView()
     }
     
     func setupCollectionView() {
@@ -52,7 +52,7 @@ class SearchResultViewController: UIViewController {
         // 아이템 위아래 사이 간격 설정
         flowLayout.minimumLineSpacing = CVCell.spacingWitdh
         
-        // 컬렉션뷰의 속성에 할당 ⭐️
+        // 컬렉션뷰의 속성에 할당 ⭐️⭐️
         collectionView.collectionViewLayout = flowLayout
     }
     
@@ -64,20 +64,40 @@ class SearchResultViewController: UIViewController {
         self.musicArrays = []
         
         // 네트워킹 시작
-        
+        networkManager.fetchMusic(searchTerm: term) { result in
+            switch result {
+            case .success(let musicDatas):
+                // 결과 배열에 담고
+                self.musicArrays = musicDatas
+                // 컬렉션뷰 리로드 (메인쓰레드에서)
+                DispatchQueue.main.async {
+                    self.collectionView.reloadData()
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
     }
     
 }
 
-extension SearchResultViewController: UICollectionViewDataSource {
+extension SearchResultViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return musicArrays.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Cell.musicCollectionViewCellIdentifier, for: indexPath) as! MusicCollectionViewCell
-        
+        cell.imageUrl = musicArrays[indexPath.item].imageUrl
         
         return cell
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let current = musicArrays[indexPath.item]
+        // let musicPlayViewController = MusicPlayViewController
+        
+        
+    }
+    
 }

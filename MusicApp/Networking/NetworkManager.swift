@@ -27,11 +27,14 @@ final class NetworkManger {
     typealias NetworkCompletion = (Result<[Music], NetworkError>) -> Void
     
     // 네트워킹 요청하는 함수 (음악데이터 가져오기)
-    func fetchMusic() {
-        let urlString = ""
+    func fetchMusic(searchTerm: String, completion: @escaping NetworkCompletion
+    ) {
+        let urlString = "\(MusicApi.requestUrl)\(MusicApi.mediaParam)&term=\(searchTerm)"
         print(urlString)
         
-        performRequest()
+        performRequest(with: urlString) { result in
+            completion(result)
+        }
     }
     
     // 실제 Request하는 함수 (비동기적 실행 -> 클로저 방식으로 끝난 시점을 전달 받도록 설계)
@@ -46,12 +49,10 @@ final class NetworkManger {
                 completion(.failure(.networkingError))
                 return
             }
-            
             guard let safeData = data else {
                 completion(.failure(.dataError))
                 return
             }
-            
             // 메서드 실행해서, 결과를 받음
             if let musics = self.parseJSON(safeData) {
                 print("Parse 실행")

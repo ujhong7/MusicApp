@@ -10,9 +10,11 @@ import UIKit
 class ViewController: UIViewController {
 
     // SearchResultController
-    let searchController = UISearchController(searchResultsController: UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SearchResultController") as! SearchResultViewController)
+    let searchController = UISearchController(searchResultsController: UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SearchResultViewController") as! SearchResultViewController)
     
-    @IBOutlet weak var musicTabelView: UITableView!
+    
+    @IBOutlet weak var musicTableView: UITableView!
+    
     
     // 네트워크 매니저 (싱글톤)
     let networkManger = NetworkManger.shared
@@ -28,7 +30,6 @@ class ViewController: UIViewController {
         setupDatas()
     }
 
-
     // 서치바 세팅
     func setupSearchBar() {
         self.title = "Music Search"
@@ -43,17 +44,31 @@ class ViewController: UIViewController {
     
     // 테이블뷰 셋팅
     func setupTableView() {
-        musicTabelView.dataSource = self
-        musicTabelView.delegate = self
+        musicTableView.dataSource = self
+        musicTableView.delegate = self
         
         // 🔴 Nib파일을 사용한다면 등록과정 필요
-        musicTabelView.register(UINib(nibName: Cell.musicCellIdentifier, bundle: nil), forCellReuseIdentifier: Cell.musicCellIdentifier)
+        musicTableView.register(UINib(nibName: Cell.musicCellIdentifier, bundle: nil), forCellReuseIdentifier: Cell.musicCellIdentifier)
     }
 
     // 데이터 셋팅
     func setupDatas() {
-        
+        // 네트워킹의 시작
+        networkManger.fetchMusic(searchTerm: "jazz") { result in
+            print(#function)
+            switch result {
+            case .success(let musicDatas):
+                self.musicArrays = musicDatas
+                // 테이블뷰 리로드
+                DispatchQueue.main.async {
+                    self.musicTableView.reloadData()
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
     }
+    
 }
 
 extension ViewController: UITableViewDataSource {
@@ -62,7 +77,7 @@ extension ViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = musicTabelView.dequeueReusableCell(withIdentifier: Cell.musicCellIdentifier, for: indexPath) as! MusicCell
+        let cell = musicTableView.dequeueReusableCell(withIdentifier: Cell.musicCellIdentifier, for: indexPath) as! MusicCell
         
         cell.imageUrl = musicArrays[indexPath.row].imageUrl // ⭐️⭐️⭐️⭐️
         
@@ -74,8 +89,6 @@ extension ViewController: UITableViewDataSource {
         cell.selectionStyle = .none
         return cell
     }
-    
-    
 }
 
 extension ViewController: UITableViewDelegate {
@@ -88,15 +101,13 @@ extension ViewController: UITableViewDelegate {
 
 // MARK: - 검색하는 동안 (새로운 화면을 보여주는) 복잡한 내용 구현 가능
 extension ViewController: UISearchResultsUpdating {
-    // 유저가 글자를 입력하는 순간마다 호출되는 메서드 -> 일반적으로 다른 화면을 보여줄때 구현
+    // 유저가 글자를 입력하는 순간마다 호출되는 메서드 ===> 일반적으로 다른 화면을 보여줄때 구현
     func updateSearchResults(for searchController: UISearchController) {
         print("서치바에 입력되는 단어", searchController.searchBar.text ?? "")
-        // 글자를 치는 순간에 다른 화면을 보여주고 싶다면
+        // 글자를 치는 순간에 다른 화면을 보여주고 싶다면 (컬렉션뷰를 보여줌)
         let vc = searchController.searchResultsController as! SearchResultViewController
         // 컬렉션뷰에 찾으려는 단어 전달
         vc.searchTerm = searchController.searchBar.text ?? ""
     }
-    
-    
 }
 

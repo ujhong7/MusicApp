@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MusicCollectionViewCell: UICollectionViewCell {
+final class MusicCollectionViewCell: UICollectionViewCell {
     
     @IBOutlet private weak var mainImageView: UIImageView!
     
